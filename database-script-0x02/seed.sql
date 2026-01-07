@@ -7,18 +7,18 @@ BEGIN TRANSACTION;
 -- DELETE FROM payments;
 -- DELETE FROM bookings;
 DELETE FROM Property;
--- DELETE FROM users;
+DELETE FROM users;
 
 -- Insert users
--- INSERT INTO users (
---   first_name, last_name, email, password_hash, phone_number, role
---   ) VALUES
---   ('Halimat', 'Olakitan', 'halimat@example.com', 'hally', '+2347012345678','guest'),
---   ('John', 'Doe', 'john.doe@example.com','hello', '+12025550123', 'host'),
---   ('Maria', 'Garcia', 'lymah@example.com', 'mypass', '+1234567890', 'guest'),
---   ('Aisha', 'Bello', 'aisha.bello@example.com', 'mypass', '+2348098765432', 'admin'),
---   ('Liam', 'Smith', 'liam.smith@example.com', 'word', NULL, 'guest'),
---   ('Chen', 'Wang', 'chen.wang@example.com', 'ryyu', '+8613012345678', 'host');
+INSERT INTO users (
+  first_name, last_name, email, password_hash, phone_number, role
+  ) VALUES
+  ('Halimat', 'Olakitan', 'halimat@example.com', 'hally', '+2347012345678','guest'),
+  ('John', 'Doe', 'john.doe@example.com','hello', '+12025550123', 'host'),
+  ('Maria', 'Garcia', 'lymah@example.com', 'mypass', '+1234567890', 'guest'),
+  ('Aisha', 'Bello', 'aisha.bello@example.com', 'mypass', '+2348098765432', 'admin'),
+  ('Liam', 'Smith', 'liam.smith@example.com', 'word', NULL, 'guest'),
+  ('Chen', 'Wang', 'chen.wang@example.com', 'ryyu', '+8613012345678', 'host');
 
 -- Insert properties
 INSERT INTO Property (
@@ -30,13 +30,15 @@ INSERT INTO Property (
   ((SELECT user_id FROM users WHERE first_name = 'Aisha'), 'Mountain Cabin', 'Small wooden cabin with scenic views', 'Jos', 70.00);
 
 -- -- Insert bookings
--- -- booking 1: John books the Cozy Lagos Appartment for 3 nights
--- INSERT INTO Booking (property_id, user_id, start_date, end_date, total_amount, status) VALUES
---   (1, 2, '2025-12-01', '2025-12-04', 45.00 * 3, 'confirmed'),
---   (3, 3, '2025-11-20', '2025-11-23', 120.00 * 3, 'pending'),
---   (2, 5, '2025-12-10', '2025-12-12', 80.00 * 2, 'confirmed'),
---   (4, 2, '2025-12-20', '2025-12-22', 70.00 * 2, 'cancelled'),
---   (1, 4, '2026-01-05', '2026-01-08', 45.00 * 3, 'pending');
+-- booking 1: John books the Cozy Lagos Appartment for 3 nights
+INSERT INTO Booking (
+  property_id, user_id, start_date, end_date, total_price, status
+) VALUES
+  ((SELECT property_id FROM Property WHERE name = 'Cozy Lagos Apartment'), (SELECT user_id FROM users WHERE first_name = 'John'), '2025-12-01', '2025-12-04', 45.00 * 3, 'confirmed'),
+  ((SELECT property_id FROM Property WHERE name = 'Family House with Garden'), (SELECT user_id FROM users WHERE first_name = 'Maria'), '2025-11-20', '2025-11-23', 120.00 * 3, 'pending'),
+  ((SELECT property_id FROM Property WHERE name = 'Downtown Loft'), (SELECT user_id FROM users WHERE first_name = 'Liam'), '2025-12-10', '2025-12-12', 80.00 * 2, 'confirmed'),
+  ((SELECT property_id FROM Property WHERE name = 'Mountain Cabin'), (SELECT user_id FROM users WHERE first_name = 'John'), '2025-12-20', '2025-12-22', 70.00 * 2, 'cancelled'),
+  ((SELECT property_id FROM Property WHERE name = 'Cozy Lagos Apartment'), (SELECT user_id FROM users WHERE first_name = 'Halimat'), '2026-01-05', '2026-01-08', 45.00 * 3, 'pending');
 
 -- -- Insert payments for confirmed bookings
 -- INSERT INTO Payment (booking_id, amount, method, status) VALUES
