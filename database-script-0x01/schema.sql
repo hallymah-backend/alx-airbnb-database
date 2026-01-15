@@ -37,40 +37,40 @@ CREATE TABLE Booking (
     status VARCHAR(20) CHECK (status IN ('pending', 'confirmed', 'canceled')) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
---     FOREIGN KEY (property_id) REFERENCES Property(property_id),
---     FOREIGN KEY (user_id) REFERENCES users(user_id)
--- );
+    FOREIGN KEY (property_id) REFERENCES Property(property_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
--- CREATE INDEX idx_booking_property_id ON Booking(property_id);
--- CREATE INDEX idx_booking_user_id ON Booking(user_id);
--- CREATE INDEX idx_booking_status ON Booking(status);
+CREATE INDEX idx_booking_property_id ON Booking(property_id);
+CREATE INDEX idx_booking_user_id ON Booking(user_id);
+CREATE INDEX idx_booking_status ON Booking(status);
 
--- -- PAYMENT TABLE
--- CREATE TABLE Payment (
---     payment_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
---     booking_id UUID NOT NULL,
---     amount DECIMAL(10, 2) NOT NULL,
---     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     payment_method VARCHAR(50) CHECK (payment_method IN ('credit_card', 'paypal', 'stripe')) NOT NULL,
---     FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
--- );
+-- PAYMENT TABLE
+CREATE TABLE Payment (
+    payment_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    booking_id UUID NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    payment_method VARCHAR(50) CHECK (payment_method IN ('credit_card', 'paypal', 'stripe')) NOT NULL,
+    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+);
 
--- CREATE INDEX idx_payment_booking_id ON Payment(booking_id);
+CREATE INDEX idx_payment_booking_id ON Payment(booking_id);
 
--- -- REVIEW TABLE
--- CREATE TABLE Review (
---     review_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
---     property_id UUID NOT NULL,
---     user_id UUID NOT NULL,
---     rating INTEGER CHECK (rating >= 1 AND rating <= 5) NOT NULL,
---     comment TEXT NOT NULL,
---     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     FOREIGN KEY (property_id) REFERENCES Property(property_id),
---     FOREIGN KEY (user_id) REFERENCES users(user_id)
--- );
+-- REVIEW TABLE
+CREATE TABLE Review (
+    review_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    property_id UUID NOT NULL,
+    user_id UUID NOT NULL,
+    rating INTEGER CHECK (rating >= 1 AND rating <= 5) NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (property_id) REFERENCES Property(property_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
--- CREATE INDEX idx_review_property_id ON Review(property_id);
--- CREATE INDEX idx_review_user_id ON Review(user_id);
+CREATE INDEX idx_review_property_id ON Review(property_id);
+CREATE INDEX idx_review_user_id ON Review(user_id);
 
 -- -- MESSAGE TABLE
 -- CREATE TABLE Message (
