@@ -10,7 +10,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-- -- PROPERTY TABLE
+ -- PROPERTY TABLE
 CREATE TABLE Property (
     property_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     host_id UUID NOT NULL,
