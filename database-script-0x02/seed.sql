@@ -96,6 +96,20 @@ VALUES
     45.00
   ),
   (
+      (
+        SELECT
+        user_id
+      FROM
+        users
+      WHERE
+        first_name = 'Chen'
+    ),
+    'Cozy beachside Villa',
+    '1BR apartment near the beach',
+    'Lagos',
+    455.00
+  ),
+  (
     (
       SELECT
         user_id
@@ -338,6 +352,7 @@ VALUES
     5,
     'Nice loft, a little noisy at night but overall good.'
   ),
+ 
   (
     (SELECT property_id FROM Property WHERE name = 'Downtown Loft'),
     (SELECT user_id FROM users WHERE first_name = 'Liam'),
