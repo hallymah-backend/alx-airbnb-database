@@ -6,19 +6,19 @@
 -- -- ORDER BY  email DESC;
 
 -- INNER JOIN
--- SELECT
---     users.first_name || ' ' || users.last_name AS "Guest Name",
---     users.email AS "Guest Email",
---     users.user_id AS "Guest Identifier",
---     booking.booking_id AS "Booking Identifier",
---     booking.property_id AS "Property Identifier",
---     booking.start_date AS "Start Date",
---     booking.end_date AS "End Date",
---     booking.total_price AS "Total Price",
---     booking.status AS "Status"
--- FROM
---     users
---     INNER JOIN booking ON booking.user_id = users.user_id;
+SELECT
+    users.first_name || ' ' || users.last_name AS "Guest Name",
+    users.email AS "Guest Email",
+    users.user_id AS "Guest Identifier",
+    booking.booking_id AS "Booking Identifier",
+    booking.property_id AS "Property Identifier",
+    booking.start_date AS "Start Date",
+    booking.end_date AS "End Date",
+    booking.total_price AS "Total Price",
+    booking.status AS "Status"
+FROM
+    users
+    INNER JOIN booking ON booking.user_id = users.user_id;
 
 -- LEFT JOIN
 SELECT
@@ -34,12 +34,12 @@ FROM
 
 
 -- OUTER JOIN
--- SELECT
---     users.first_name || ' ' || users.last_name AS "Guest Name",
---     users.email AS "Guest Email",
---     booking.property_id,
---     booking.start_date,
---     booking.end_date
--- FROM
---     users
---     FULL OUTER JOIN booking ON users.user_id = booking.user_id;
+SELECT
+    users.first_name || ' ' || users.last_name AS "Guest Name",
+    users.email AS "Guest Email",
+    booking.property_id,
+    booking.start_date,
+    booking.end_date
+FROM
+    users
+    FULL OUTER JOIN booking ON users.user_id = booking.user_id;
