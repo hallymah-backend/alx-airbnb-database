@@ -1,5 +1,5 @@
 Index Performance Monitoring
-
+<!-- 
 1. Initial Query
 
 SELECT b.booking_id,
@@ -12,9 +12,9 @@ pay.status AS payment_status
 FROM booking b
 JOIN users u ON b.user_id = u.user_id
 JOIN properties p ON b.property_id = p.property_id
-LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
+LEFT JOIN payments pay ON b.booking_id = pay.booking_id; -->
 
-2. Performance Before Adding Indexes
+ Performance Before Adding Indexes
    EXPLAIN ANALYZE
    SELECT b.booking_id,
    user.first_name || ' ' || user.last_name AS user_name,
@@ -30,15 +30,15 @@ LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
 
 Observation: The query performs sequential scans on booking, users, and properties, and joins are slower due to missing indexes.
 
-3. Index Creation
+<!-- 3. Index Creation
    CREATE INDEX idx_booking_user_id ON booking(user_id);
    CREATE INDEX idx_booking_property_id ON booking(property_id);
-   CREATE INDEX idx_payments_booking_id ON payments(booking_id);
+   CREATE INDEX idx_payments_booking_id ON payments(booking_id); -->
 
 ANALYZE booking;
 ANALYZE payments;
 
-4. Performance After Adding Indexes
+ Performance After Adding Indexes
    EXPLAIN ANALYZE
    SELECT b.booking_id,
    user.first_name || ' ' || user.last_name AS user_name,
