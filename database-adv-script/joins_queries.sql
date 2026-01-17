@@ -4,7 +4,6 @@
 --    ON users.user_id = property.host_id;
 -- --    WHERE LOWER(last_name) = LOWER('olakitan')
 -- -- ORDER BY  email DESC;
-
 -- INNER JOIN
 SELECT
     users.first_name || ' ' || users.last_name AS "Guest Name",
@@ -31,7 +30,6 @@ SELECT
 FROM
     property
     left JOIN review ON review.property_id = property.property_id;
-
 
 -- OUTER JOIN
 SELECT
