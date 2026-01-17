@@ -1,69 +1,54 @@
-Index Performance Monitoring
-<!-- 
-1. Initial Query
+Identify High-Usage Columns
 
-SELECT b.booking_id,
-user.first_name || ' ' || user.last_name AS user_name,
-p.name AS property_name,
-b.start_date,
-b.end_date,
-pay.amount,
-pay.status AS payment_status
-FROM booking b
-JOIN users u ON b.user_id = u.user_id
-JOIN properties p ON b.property_id = p.property_id
-LEFT JOIN payments pay ON b.booking_id = pay.booking_id; -->
+From the previous queries, the most frequently used columns in WHERE, JOIN, and ORDER BY clauses are:
+| Table        | High-Usage Columns       | Reason                        |
+| ------------ | ------------------------ | ----------------------------- |
+| `users`      | `id`                     | Used in JOIN and WHERE        |
+| `bookings`   | `user_id`, `property_id` | Used in JOIN and filtering    |
+| `properties` | `id`, `name`, `rating`   | Used in JOIN, ORDER BY, WHERE |
+| `reviews`    | `property_id`            | Used in JOIN                  |
 
- Performance Before Adding Indexes
-   EXPLAIN ANALYZE
-   SELECT b.booking_id,
-   user.first_name || ' ' || user.last_name AS user_name,
-   p.name AS property_name,
-   b.start_date,
-   b.end_date,
-   pay.amount,
-   pay.status AS payment_status
-   FROM booking b
-   JOIN users u ON b.user_id = u.user_id
-   JOIN properties p ON b.property_id = p.property_id
-   LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
+Write CREATE INDEX Statements
 
-Observation: The query performs sequential scans on booking, users, and properties, and joins are slower due to missing indexes.
+Save the following SQL in a file called database_index.sql
+-- Indexes on 'users' table
+CREATE INDEX idx_users_id ON users(id);
 
-<!-- 3. Index Creation
-   CREATE INDEX idx_booking_user_id ON booking(user_id);
-   CREATE INDEX idx_booking_property_id ON booking(property_id);
-   CREATE INDEX idx_payments_booking_id ON payments(booking_id); -->
+-- Indexes on 'bookings' table
+CREATE INDEX idx_bookings_user_id ON bookings(user_id);
+CREATE INDEX idx_bookings_property_id ON bookings(property_id);
 
-ANALYZE booking;
-ANALYZE payments;
+-- Indexes on 'properties' table
+CREATE INDEX idx_properties_id ON properties(id);
+CREATE INDEX idx_properties_rating ON properties(rating);
+CREATE INDEX idx_properties_name ON properties(name);
 
- Performance After Adding Indexes
-   EXPLAIN ANALYZE
-   SELECT b.booking_id,
-   user.first_name || ' ' || user.last_name AS user_name,
-   p.name AS property_name,
-   b.start_date,
-   b.end_date,
-   pay.amount,
-   pay.status AS payment_status
-   FROM booking b
-   JOIN users u ON b.user_id = u.user_id
-   JOIN properties p ON b.property_id = p.property_id
-   LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
+-- Indexes on 'reviews' table
+CREATE INDEX idx_reviews_property_id ON reviews(property_id);
 
-Observation:
+Measure Performance Before and After
 
-Query now uses index scans instead of sequential scans.
+You can use either EXPLAIN or EXPLAIN ANALYZE (PostgreSQL) to compare execution plans and timings.
+-- Before adding indexes
+EXPLAIN ANALYZE
+SELECT 
+    p.name, COUNT(b.id) AS total_bookings
+FROM 
+    properties p
+LEFT JOIN 
+    bookings b ON p.id = b.property_id
+GROUP BY 
+    p.name;
 
-Join performance improved significantly.
+-- Add indexes (run database_index.sql)
 
-Execution time reduced and planner estimates more accurate.
-
-5. Summary of Improvements
-
-Added indexes on booking.user_id, booking.property_id, and payments.booking_id.
-
-Query execution became faster with reduced I/O.
-
-EXPLAIN ANALYZE confirms indexes are used effectively for joins and filtering.
+-- After adding indexes
+EXPLAIN ANALYZE
+SELECT 
+    p.name, COUNT(b.id) AS total_bookings
+FROM 
+    properties p
+LEFT JOIN 
+    bookings b ON p.id = b.property_id
+GROUP BY 
+    p.name;
