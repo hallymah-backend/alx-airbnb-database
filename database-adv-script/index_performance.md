@@ -14,7 +14,7 @@ JOIN users u ON b.user_id = u.user_id
 JOIN properties p ON b.property_id = p.property_id
 LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
 
-2. Performance Before Indexes
+2. Performance Before Adding Indexes
    EXPLAIN ANALYZE
    SELECT b.booking_id,
    user.first_name || ' ' || user.last_name AS user_name,
@@ -38,7 +38,7 @@ Observation: The query performs sequential scans on booking, users, and properti
 ANALYZE booking;
 ANALYZE payments;
 
-4. Performance After Indexes
+4. Performance After Adding Indexes
    EXPLAIN ANALYZE
    SELECT b.booking_id,
    user.first_name || ' ' || user.last_name AS user_name,
