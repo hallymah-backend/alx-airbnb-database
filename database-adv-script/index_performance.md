@@ -14,19 +14,20 @@ JOIN users u ON b.user_id = u.user_id
 JOIN properties p ON b.property_id = p.property_id
 LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
 
- Performance Before Adding Indexes
-   EXPLAIN ANALYZE
-   SELECT b.booking_id,
-   user.first_name || ' ' || user.last_name AS user_name,
-   p.name AS property_name,
-   b.start_date,
-   b.end_date,
-   pay.amount,
-   pay.status AS payment_status
-   FROM booking b
-   JOIN users u ON b.user_id = u.user_id
-   JOIN properties p ON b.property_id = p.property_id
-   LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
+Performance Before Adding Indexes
+EXPLAIN ANALYZE
+SELECT b.booking_id,
+u.first_name || ' ' || u.last_name AS user_name
+
+p.name AS property_name,
+b.start_date,
+b.end_date,
+pay.amount,
+pay.status AS payment_status
+FROM booking b
+JOIN users u ON b.user_id = u.user_id
+JOIN properties p ON b.property_id = p.property_id
+LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
 
 Observation: The query performs sequential scans on booking, users, and properties, and joins are slower due to missing indexes.
 
@@ -41,7 +42,7 @@ ANALYZE payments;
 4. Performance After Adding Indexes
    EXPLAIN ANALYZE
    SELECT b.booking_id,
-   user.first_name || ' ' || user.last_name AS user_name,
+   u.first_name || ' ' || u.last_name AS user_name
    p.name AS property_name,
    b.start_date,
    b.end_date,
